@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { useAuth } from "@/app/context/AuthContext";
 import {
   GmailIcon,
   WhatsAppIcon,
@@ -87,6 +89,7 @@ Email Draft for client:
 ];
 
 export default function Home() {
+  const { user, signOut, loading: authLoading } = useAuth();
   // Mobile menu state
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -243,6 +246,9 @@ export default function Home() {
 
           {/* Desktop Nav Links */}
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
+            <Link href="/dashboard" className="text-indigo-400 font-semibold hover:text-indigo-300 transition-colors">
+              Dashboard
+            </Link>
             <a href="#features" className="hover:text-zinc-100 transition-colors">Features</a>
             <a href="#integrations" className="hover:text-zinc-100 transition-colors">Integrations</a>
             <a href="#playground" className="hover:text-zinc-100 transition-colors">Interactive Demo</a>
@@ -250,20 +256,46 @@ export default function Home() {
             <a href="#faq" className="hover:text-zinc-100 transition-colors">FAQs</a>
           </nav>
 
-          {/* CTA Button */}
+          {/* CTA Button / User Profile */}
           <div className="hidden md:flex items-center gap-4">
-            <a href="#playground" className="text-sm font-medium text-zinc-300 hover:text-white transition-colors">
-              Sign In
-            </a>
-            <a
-              href="#pricing"
-              className="relative group overflow-hidden rounded-full p-px font-semibold text-xs text-white uppercase tracking-wider"
-            >
-              <span className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full" />
-              <div className="relative px-6 py-2.5 bg-black rounded-full transition-colors group-hover:bg-transparent duration-300">
-                Launch App
+            {authLoading ? (
+              <div className="text-xs text-zinc-500 animate-pulse">Loading auth...</div>
+            ) : user ? (
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900 border border-white/10 text-xs font-medium text-zinc-200">
+                  <div className="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-[10px]">
+                    {(user.profile?.name || user.email || "U").charAt(0).toUpperCase()}
+                  </div>
+                  <span className="max-w-[120px] truncate">
+                    {user.profile?.name || user.email}
+                  </span>
+                </div>
+                <button
+                  onClick={() => signOut()}
+                  className="text-xs font-medium text-zinc-400 hover:text-white transition-colors py-1.5 px-3 rounded-full hover:bg-white/5"
+                >
+                  Sign Out
+                </button>
               </div>
-            </a>
+            ) : (
+              <>
+                <Link
+                  href="/sign-in"
+                  className="text-sm font-medium text-zinc-300 hover:text-white transition-colors"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/sign-up"
+                  className="relative group overflow-hidden rounded-full p-px font-semibold text-xs text-white uppercase tracking-wider"
+                >
+                  <span className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full" />
+                  <div className="relative px-6 py-2.5 bg-black rounded-full transition-colors group-hover:bg-transparent duration-300">
+                    Get Started
+                  </div>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}

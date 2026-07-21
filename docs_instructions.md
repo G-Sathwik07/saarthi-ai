@@ -1,9 +1,3 @@
----
-description: Instructions building apps with MCP
-globs: *
-alwaysApply: true
----
-
 # InsForge SDK Documentation - Overview
 
 ## What is InsForge?
@@ -44,13 +38,13 @@ You must create a client instance using `createClient()` with your base URL and 
 import { createClient } from '@insforge/sdk';
 
 const client = createClient({
-  baseUrl: 'https://your-app.region.insforge.app',  // Your InsForge backend URL
+  baseUrl: 'https://744pi2u4.us-east.insforge.app',  // Your InsForge backend URL
   anonKey: 'your-anon-key-here'       // Get this from backend metadata
 });
 
 ```
 
-**API BASE URL**: Your API base URL is `https://your-app.region.insforge.app`.
+**API BASE URL**: Your API base URL is `https://744pi2u4.us-east.insforge.app`.
 
 ## Getting Detailed Documentation
 
